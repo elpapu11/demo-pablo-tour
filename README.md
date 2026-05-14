@@ -76,29 +76,44 @@ El output se genera en `/dist/` — listo para desplegar en Cloudflare Pages, Ne
 
 ## Como Desplegar
 
-### Cloudflare Pages
-1. Subir la carpeta `dist/` como nuevo proyecto
-2. Framework preset: None (static site)
-3. Build command: `npm run build`
-4. Build output: `dist`
+### Opcion recomendada: Cloudflare Pages + GitHub (CI/CD automatico)
 
-### Netlify
-1. Drag & drop la carpeta `dist/` en Netlify Drop
-2. O conectar el repositorio y usar `npm run build`
+Conecta tu repositorio de GitHub para que cada push a `main` se despliegue automaticamente.
 
-### Vercel
+1. Ve a [dash.cloudflare.com](https://dash.cloudflare.com) → **Pages** → **Create a project**
+2. Selecciona **Connect to Git** y autoriza tu cuenta de GitHub
+3. Selecciona el repositorio `demo-pablo-tour`
+4. Configura el build:
+
+| Campo | Valor |
+|---|---|
+| **Production branch** | `main` |
+| **Framework preset** | `None` |
+| **Build command** | `npm run build` |
+| **Build output directory** | `dist` |
+
+5. Guarda y despliega. Cloudflare generara una URL tipo `https://demo-pablo-tour.pages.dev`
+
+> Cada push a `main` hara deploy automatico. Cada pull request genera una Preview URL.
+
+### Opcion alternativa: Wrangler CLI (deploy manual desde terminal)
+
+Si prefieres desplegar manualmente sin conectar GitHub:
+
 ```bash
-npm i -g vercel
-vercel --prod dist/
+# 1. Autenticar con Cloudflare (abre el navegador)
+npx wrangler login
+
+# 2. Compilar para produccion
+npm run build
+
+# 3. Desplegar el contenido de dist/
+npm run deploy
+# o
+npx wrangler pages deploy dist
 ```
 
-## Archivos de Documentacion
-
-| Archivo | Contenido |
-|---------|-----------|
-| `public/asset-sources.md` | Fuentes de imagenes y notas de derechos |
-| `public/copy-notes.md` | Notas sobre el copy reescrito |
-| `public/datos-a-verificar-con-cliente.md` | Lista de datos pendientes de verificacion |
+> Nota: Con Wrangler CLI no hay CI/CD automatico. Debes correr el deploy manualmente cada vez que haya cambios.
 
 ## Funcionalidades
 
